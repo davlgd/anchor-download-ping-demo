@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="scripts/toggle.js" defer></script>
+    <link href="assets/style.css" rel="stylesheet" type="text/css" />
+    <title>My Index Web Page</title>
+</head>
+
+<body>
+    <h1>Welcome to My Index Web Page</h1>
+
+    <div>
+        <p>This is the first paragraph.</p>
+        <p id="hw"></p>
+        <a id="btn_hw">Toggle</a>
+        <a href="other.html" ping="http://localhost:4242?action=navigate&file=other.html">> Other</a>
+    </div>
+    <div>
+        <a href="assets/adotioc.pdf" download ping="http://localhost:4242?action=dl&file=pdf">D/L PDF</a>
+        <a href="assets/adotioc.pdf" ping="http://localhost:4242?action=open&file=pdf">Open PDF</a>
+        <a href="assets/logs.txt" download="beautiful_logs.txt" ping="http://localhost:4242?action=dl&file=logs">D/L logs</a>
+        <a href="assets/logs.txt"ping="http://localhost:4242?action=open&file=logs">Open logs</a>
+    </div>
+    <div>
+        <a href="assets/davlgd-lab.webp" download ping="http://localhost:4242?action=dl&file=webp">D/L Webp</a>
+        <a href="assets/davlgd-lab.webp" ping="http://localhost:4242?action=open&file=webp">Open Webp</a>
+        <a href="https://labs.davlgd.fr/davlgd-lab.webp" download ping="http://localhost:4242?action=dl&file=external_webp">D/L External</a>
+        <a href="https://labs.davlgd.fr/davlgd-lab.webp" target="_blank"ping="http://localhost:4242?action=open&file=external_webp">Open External</a>
+    </div>
+</body>
+
+</html>

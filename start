@@ -1,0 +1,68 @@
+#!/bin/bash
+
+if ! command -v v &> /dev/null && \
+    ! command -v ./v/v &> /dev/null && \
+    command -v git &> /dev/null && \
+    command -v make &> /dev/null; 
+then
+    echo "V not found, let's build it!"
+    git clone https://github.com/vlang/v
+    cd v && make
+    cd ..
+    echo 
+elif ! command -v v &> /dev/null && \
+    ! command -v ./v/v &> /dev/null; 
+then
+    echo "You need V to run this project or git/make to build it"
+    exit 1
+fi
+
+echo -n "Building the ping server..."
+(v -prod servers/ping.v -o ping > /dev/null 2>&1 || \
+    ./v/v -prod servers/ping.v -o ping > /dev/null 2>&1) || \
+    {
+        echo "Failed to build the ping server"
+        exit 1
+    }
+echo -e "\rBuilding the ping server: \033[32m✔\033[0m"
+
+echo -n "Building the www server..."
+(v -prod servers/web.v -o web > /dev/null 2>&1 || \
+    ./v/v -prod servers/web.v -o web > /dev/null 2>&1) || \
+    {
+        echo "Failed to build the www server"
+        exit 1
+    }
+echo -e "\rBuilding the www server: \033[32m✔\033[0m"
+
+echo
+echo -n "Running the ping server..."
+./ping &
+PID_PING=$!
+echo -e "\rRunning the ping server: \033[32m✔\033[0m"
+
+echo -n "Running the web server..."
+./web &
+PID_SERVER=$!
+echo -e "\rRunning the web server: \033[32m✔\033[0m"
+echo 
+
+sleep 2
+
+echo
+echo "Ping PID   : $PID_PING"
+echo "Server PID : $PID_SERVER"
+echo 
+
+xdg-open http://localhost:8080 > /dev/null 2>&1 || \
+    open http://localhost:8080 > /dev/null 2>&1
+
+# Wait for the user to stop the applications
+read -p "Press any key to stop both apps..." -n1 -s
+echo -e "\n"
+(kill $PID_PING && kill $PID_SERVER) && \
+    echo "Both applications stopped" || \
+    {
+        echo "Failed to stop the applications"
+        exit 1
+    }
